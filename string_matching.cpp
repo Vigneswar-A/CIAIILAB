@@ -55,9 +55,48 @@ void rabin_karp(string text, string pattern, int q)
     }
 }
 
+void prefix_calculation(string pattern, int *prefix)
+{
+    int n = pattern.length(), i = 1, len = 0;
+    prefix[0] = 0;
+
+    while (i < n)
+        if (pattern[len] == pattern[i])
+            prefix[i++] = ++len;
+        else if (len)
+            len = prefix[len - 1];
+        else
+            prefix[i++] = 0;
+}
+
+void kmp(string text, string pattern)
+{
+    int n = text.length(), m = pattern.length();
+    int *prefix = new int[m];
+    prefix_calculation(pattern, prefix);
+    int i = 0, j = 0;
+
+    while (n - i >= m - j)
+    {
+        if (text[i] == pattern[j])
+        {
+            i++;
+            j++;
+        }
+        else if (j > 1)
+            j = prefix[j - 1];
+        else
+            i++;
+
+        if (j == m)
+            cout << "pattern found at " << i - j << endl;
+    }
+}
+
 int main(void)
 {
     // naive_string_matching("abcabcababac", "babac");
-    rabin_karp("abdabcabacdbabac", "aba", 17);
+    // rabin_karp("abdabcabacdbabac", "aba", 17);
+    kmp("abababababa", "aba");
     return 0;
 }
