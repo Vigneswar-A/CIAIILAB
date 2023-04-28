@@ -83,7 +83,7 @@ void kmp(string text, string pattern)
             i++;
             j++;
         }
-        else if (j > 1)
+        else if (j)
             j = prefix[j - 1];
         else
             i++;
